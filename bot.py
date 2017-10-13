@@ -26,7 +26,7 @@ ws = wb['Sheet2']
 ws['A1'] = None  # deleting first cell with value "Column1.id"
 
 day = 86400  # (24h = 86400 UNIX)
-period = time.time() - day  # start time in UNIX. subtracting 24h from current time
+now_time = time.time()  # now time in UNIX
 
 RESULT_DICT = collections.OrderedDict()  # key:value result for each keyword
 for (i,) in ws.values:
@@ -58,12 +58,12 @@ def search_engine(text, title):
         if i is not None:  # check for None value in cell
             keyword = str(i).replace('-', '.')
             pattern = re.compile(keyword, re.IGNORECASE)
-            result_text = re.search(pattern, text)  # searching for the first match in text
-            result_title = re.search(pattern, title)
+            result_text = re.findall(pattern, text)  # searching for the first match in text
+            result_title = re.findall(pattern, title)
             if result_text is not None:
-                RESULT_DICT[str(i)] += 1  # +1 to value if keyword will be found
+                RESULT_DICT[str(i)] += len(result_text)  # + number of matches to value if keyword will be found
             if result_title is not None:
-                RESULT_DICT[str(i)] += 1
+                RESULT_DICT[str(i)] += len(result_title)
         else:
             pass
 
@@ -72,7 +72,7 @@ def search_engine(text, title):
 
 
 def submission_search():
-    for submission in subreddits.submissions(start=period):  # Getting all subreddits for the last 24h
+    for submission in subreddits.submissions(start=(now_time-day)):  # Getting all subreddits for the last 24h
         title = submission.title.encode('utf-8')  # submission title
         text = submission.selftext.encode('utf-8')  # submission text
         created = time.ctime(submission.created_utc)  # created time
@@ -88,7 +88,7 @@ def submission_search():
 
 
 def comments_search():
-    for submission in subreddits.submissions(start=(period - day)):  # Getting all subreddits for the last 48h
+    for submission in subreddits.submissions(start=(now_time-day*3)):  # Getting all subreddits for the last 72h
         submission.comments.replace_more(limit=0)  # searching for all comments and replies
         for comment in submission.comments.list():
             if comment.created_utc >= period:
