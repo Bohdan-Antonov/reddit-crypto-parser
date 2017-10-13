@@ -91,7 +91,7 @@ def comments_search():
     for submission in subreddits.submissions(start=(now_time-day*3)):  # Getting all subreddits for the last 72h
         submission.comments.replace_more(limit=0)  # searching for all comments and replies
         for comment in submission.comments.list():
-            if comment.created_utc >= period:
+            if comment.created_utc >= (period-day):
                 search_engine(comment.body, title='')
             text = comment.body.encode('utf-8')  # comment text
             created = time.ctime(comment.created_utc)  # created time
