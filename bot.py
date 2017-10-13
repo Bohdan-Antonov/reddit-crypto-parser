@@ -118,9 +118,9 @@ def save_results():
 if __name__ == "__main__":
     subreddit()
     submission_search()
-    comments_search()
-    print RESULT_DICT
+    comments_search()    
     save_results()
+    print "\nSuccessful!"
 
 
 
