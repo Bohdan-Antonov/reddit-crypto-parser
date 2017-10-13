@@ -104,14 +104,14 @@ def comments_search():
 
 
 def save_results():
-    now = datetime.datetime.now().strftime('%Y-%m-%d')  # now date
+    now_date = datetime.datetime.now().strftime('%Y-%m-%d')  # now date
     workbook = openpyxl.Workbook()  # creating new file
     sheet = workbook.active
     items = RESULT_DICT.items()  # getting all key:values
     for (i, k) in items:
         result = (i, k)
         sheet.append(result)  # writing results
-    workbook.save('CoinMarketCap(%s).xlsx' % now)  # save file as "CoinMarketCap(<now date>).xlsx"
+    workbook.save('CoinMarketCap(%s).xlsx' % now_date)  # save file as "CoinMarketCap(<now date>).xlsx"
     workbook.close()
 
 
