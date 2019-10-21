@@ -9,5 +9,5 @@ prawcore==0.12.0
 pytz==2017.2
 requests==2.18.4
 update-checker==0.16
-urllib3==1.22
+urllib3==1.24.2
 zope.interface==4.4.3
